@@ -12,7 +12,7 @@
 	</header>
 	<article>
 	</article>
-	<footer>
+	<footer>ㅁㅁㅁ
 	</footer>
 </body>
 </html>
