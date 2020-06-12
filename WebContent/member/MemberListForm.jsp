@@ -2,11 +2,9 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.*" %>    
 <%@ page import="jsp.member.model.MemberBean" %>
- 
-<%
-    // MemberInfoAction에서 넘긴 회원정보를 추출한다.
-    ArrayList<MemberBean> memberList = (ArrayList<MemberBean>)request.getAttribute("memberList");
-%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>  
+
+
  
 <html>
 <head>
@@ -46,22 +44,21 @@
             <td id=title>주소</td>
             <td id=title>가입일</td>
         </tr>
-    
-    <%
-        for( MemberBean member : memberList){
-    %>            
-        <tr>
-            <td><%=member.getId() %></td>
-            <td><%=member.getPassword() %></td>
-            <td><%=member.getName() %></td>
-            <td><%=member.getGender() %></td>
-            <td><%=member.getBirthyy() %></td>
-            <td><%=member.getMail1() %></td>
-            <td><%=member.getPhone() %></td>
-            <td><%=member.getAddress() %></td>
-            <td><%=member.getReg() %></td>
-        </tr>
-    <%} %>    
+        
+        <c:set var="memberList" value="${requestScope.memberList}"/>
+        <c:forEach var="member" items="${memberList}">
+            <tr>
+                <td>${member.id}</td>
+                <td>${member.password}</td>
+                <td>${member.name}</td>
+                <td>${member.gender}</td>
+                <td>${member.birthyy}</td>
+                <td>${member.mail1}</td>
+                <td>${member.phone}</td>
+                <td>${member.address}</td>
+                <td>${member.reg}</td>
+            </tr>
+        </c:forEach>   
     </table>
  
     

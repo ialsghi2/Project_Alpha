@@ -4,8 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>아이디 중복 체크</title>
-    
-    <style type="text/css">
+   <style type="text/css">
         #wrap {
             width: 490px;
             text-align :center;
@@ -52,11 +51,9 @@
         
         // 회원가입창의 아이디 입력란의 값을 가져온다.
         function pValue(){
-        	
-            document.getElementById("userId").value = window.opener.document.userInfo.id.value;
-
-
-        }       
+            document.getElementById("userId").value = opener.document.userInfo.id.value;
+        }
+        
         // 아이디 중복체크
         function idCheck(){
  
@@ -66,10 +63,10 @@
                 alert("아이디를 입력하지 않았습니다.");
                 return false;
             } 
-            else if((id < "0" || id > "9") && (id < "A" || id > "Z") && (id < "a" || id > "z")) { 
+            else if((id < "0" || id > "9") && (id < "A" || id > "Z") && (id < "a" || id > "z")){ 
                 alert("한글 및 특수문자는 아이디로 사용하실 수 없습니다.");
                 return false;
-            }    
+            }
             else
             {
                 var param="id="+id
@@ -86,7 +83,7 @@
                 // 결과값을 가져온다.
                 var resultText = httpRequest.responseText;
                 if(resultText == 0){
-                    alert("사용할 수 없는 아이디입니다.");
+                    alert("사용할수없는 아이디입니다.");
                     document.getElementById("cancelBtn").style.visibility='visible';
                     document.getElementById("useBtn").style.visibility='hidden';
                     document.getElementById("msg").innerHTML ="";
@@ -112,7 +109,7 @@
             }    
         }    
    </script>
-    
+
 </head>
 <body onload="pValue()">
 <div id="wrap">

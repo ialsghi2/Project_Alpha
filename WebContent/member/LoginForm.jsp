@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>    
+
 <html>
 <head>
 	<%
@@ -76,7 +78,7 @@
 			<input type="button" value="취소" onclick="goFirstForm()">
 		</form>
 		
-		<% 
+		<%-- 
 			// 아이디, 비밀번호가 틀릴경우 화면에 메시지 표시
 			String loginMsg = (String)request.getAttribute("fail");
 				
@@ -90,7 +92,21 @@
 				out.println("<br>");
 				out.println("<font color='red' size='5'>아이디를 확인해 주세요.</font>");
 			}
-		%>	
+		--%>
+		
+        <c:set var="failMessage" value="${requestScope.fail}"/>
+        <c:if test="${failMessage!=null}">    
+            <c:choose>
+                <c:when test="${failMessage=='0'}">
+                    <br><font color='red' size='5'>비밀번호를 확인해 주세요.</font>
+                </c:when>
+                <c:otherwise>
+                    <br><font color='red' size='5'>아이디를 확인해 주세요.</font>
+                </c:otherwise>
+            </c:choose>
+        </c:if>
+
+	
 	</div>	
 </body>
 </html>

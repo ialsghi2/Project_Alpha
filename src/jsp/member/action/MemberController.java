@@ -118,6 +118,12 @@ public class MemberController extends HttpServlet
 				forward.setRedirect(false);
 				forward.setNextPath(form+"MemberListForm.jsp");
 			}
+			else if(command.equals("/IdCheckForm.do")) //회원정보 리스트 화면 이동
+			{
+				forward = new ActionForward();
+				forward.setRedirect(false);
+				forward.setNextPath(form+"IdCheckForm.jsp");
+			}
 			
 			
 			// 각종 처리 액션
@@ -161,11 +167,13 @@ public class MemberController extends HttpServlet
 				action = new MemberListAction();
 				forward = action.execute(request, response);
 			}
-			else if(command.equals("/MemberIdCheckAction.do")) //회원 중복 처리
-			{
-				action = new MemberIdCheckAction();
-				forward = action.execute(request, response);
-			}
+//			else if(command.equals("/MemberIdCheckAction.do")) //회원정보 리스트 처리
+//			{
+//				action = new MemberIdCheckAction();
+//				forward = action.execute(request, response);
+//			}
+//		
+		
 			
 
 			// 화면이동 - isRedirext() 값에 따라 sendRedirect 또는 forward를 사용

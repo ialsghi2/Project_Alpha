@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<%--
 	String contentPage=request.getParameter("contentPage");
 	if(contentPage==null)
 		contentPage="FirstView.jsp";
-%>
+--%>
 <html>
 <head>
 	<title>메인 화면</title>
@@ -50,15 +52,22 @@
 <body>
 
 	<div id="wrap">
-		<div id="header">
-			<jsp:include page="Header.jsp" />
-		</div>
-		<div id="main">
-			<jsp:include page="<%=contentPage%>" />
-		</div>
-		<div id="footer">
-			<jsp:include page="Footer.jsp" />
-		</div>
+        <div id="header">
+            <jsp:include page="Header.jsp" />
+        </div>
+        <div id="main">
+        
+            <!-- contentPage가 없을 경우 FirstView.jsp를 보여준다. -->
+            <c:set var="contentPage" value="${param.contentPage}"/>
+            <c:if test="${contentPage==null}">    
+                <jsp:include page="FirstView.jsp" />
+            </c:if>
+            <jsp:include page="${contentPage}" />
+            
+        </div>
+        <div id="footer"> 
+            <jsp:include page="Footer.jsp" />
+        </div>
 	</div>
 	
 </body>

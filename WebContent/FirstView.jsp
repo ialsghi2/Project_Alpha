@@ -1,25 +1,26 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>    
+
 <html>
 	<head>
 		<title>첫화면</title>
 	</head>
 	<body>		
-	<%
-		if(session.getAttribute("sessionID") == null) // 로그인이 안되었을 때
-		{ 
-	%>
-			<br><br><br>
-			<br><br><br>
-			<img src="img/welcome.jpg">
-			<br><br>	
-	<%
-		}else{ // 로그인 했을 경우	
-	%>
-			<br><br><br>
-			<font size=6 color="skyblue"><%=session.getAttribute("sessionID") %></font>
-			<font size=6>님 환영합니다.</font>
-	<%	} %>
+            <!-- 로그인 안되었을 경우 -->
+    <c:if test="${sessionScope.sessionID==null}">
+        <br><br><br>
+        <br><br><br>
+        <img src="img/welcome.jpg">
+        <br><br>    
+    </c:if>    
+            <!-- 로그인 -->
+    <c:if test="${sessionScope.sessionID!=null}">    
+        <br><br><br>
+        <font size=6 color="skyblue">${sessionScope.sessionID}</font>
+        <font size=6>님 환영합니다.</font>
+    </c:if>    
+
 	</body>
 </html>
 

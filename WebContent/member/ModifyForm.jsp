@@ -2,6 +2,9 @@
     pageEncoding="UTF-8"%>
 <%@ page import="jsp.member.model.MemberDAO" %>    
 <%@ page import="jsp.member.model.MemberBean" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> 
+
+
 
 <%
 	// MemberInfoAction에서 넘긴 회원정보를 추출한다.
@@ -32,8 +35,7 @@
 	<script type="text/javascript">
 	
 		function init(){
-			setComboValue("<%=member.getMail2()%>");
-		}
+            setComboValue("${member.mail2}");
 
 		function setComboValue(val) 
 		{
@@ -64,80 +66,82 @@
 		<br><br>
 		<b><font size="6" color="gray">회원정보 수정</font></b>
 		<br><br><br>
-		
-		<!-- 입력한 값을 전송하기 위해 form 태그를 사용한다 -->
-		<!-- 값(파라미터) 전송은 POST 방식 -->
-		<form method="post" action="MemberModifyAction.do" 
-				name="userInfo" onsubmit="return checkValue()">
-				
-			<table>
-				<tr>
-					<td id="title">아이디</td>
-					<td id="title"><%=member.getId() %></td>
-				</tr>
-				<tr>
-					<td id="title">비밀번호</td>
-					<td>
-						<input type="password" name="password" maxlength="50" 
-							value="<%=member.getPassword()%>">
-					</td>
-				</tr>
-			</table>	
-			<br><br>	
-			<table>
-
-				<tr>
-					<td id="title">이름</td>
-					<td><%=member.getName() %></td>
-				</tr>
-					
-				<tr>
-					<td id="title">성별</td>
-					<td><%=member.getGender()%></td>
-				</tr>
-					
-				<tr>
-					<td id="title">생일</td>
-					<td>
-						<%=member.getBirthyy() %>년 
-						<%=member.getBirthmm() %>월 
-						<%=member.getBirthdd() %>일
-					</td>
-				</tr>
-					
-				<tr>
-					<td id="title">이메일</td>
-					<td>
-						<input type="text" name="mail1" maxlength="50" 
-							value="<%=member.getMail1() %>">
-						@
-						<select name="mail2" id="mail2">
-							<option value="naver.com">naver.com</option>
-							<option value="gmail.com">gmail.com</option>
-							<option value="daum.net" >daum.net</option>
-							<option value="nate.com">nate.com</option>						
-						</select>
-					</td>
-				</tr>
-					
-				<tr>
-					<td id="title">휴대전화</td>
-					<td>
-						<input type="text" name="phone" value="<%=member.getPhone() %>"/>
-					</td>
-				</tr>
-				<tr>
-					<td id="title">주소</td>
-					<td>
-						<input type="text" size="50" name="address"
-							value="<%=member.getAddress() %>"/>
-					</td>
-				</tr>
-			</table>
-			<br><br>
-			<input type="button" value="취소" onclick="javascript:window.location='MainForm.do'">
-			<input type="submit" value="수정"/>  
-		</form>
-		
+        <!-- 회원정보를 가져와 member 변수에 담는다. -->
+        <c:set var="member" value="${requestScope.memberInfo}"/>
+        
+        <!-- 입력한 값을 전송하기 위해 form 태그를 사용한다 -->
+        <!-- 값(파라미터) 전송은 POST 방식 -->
+        <form method="post" action="MemberModifyAction.do" 
+                name="userInfo" onsubmit="return checkValue()">
+                
+            <table>
+                <tr>
+                    <td id="title">아이디</td>
+                    <td id="title">${member.id}</td>
+                </tr>
+                <tr>
+                    <td id="title">비밀번호</td>
+                    <td>
+                        <input type="password" name="password" maxlength="50" 
+                            value="${member.password}">
+                    </td>
+                </tr>
+            </table>    
+            <br><br>    
+            <table>
+ 
+                <tr>
+                    <td id="title">이름</td>
+                    <td>${member.name}</td>
+                </tr>
+                    
+                <tr>
+                    <td id="title">성별</td>
+                    <td>${member.gender}</td>
+                </tr>
+                    
+                <tr>
+                    <td id="title">생일</td>
+                    <td>
+                        ${member.birthyy}년 
+                        ${member.birthmm}월 
+                        ${member.birthdd}일
+                    </td>
+                </tr>
+                    
+                <tr>
+                    <td id="title">이메일</td>
+                    <td>
+                        <input type="text" name="mail1" maxlength="50" 
+                            value="${member.mail1}">
+                        @
+                        <select name="mail2" id="mail2">
+                            <option value="naver.com">naver.com</option>
+                            <option value="gmail.com">gmail.com</option>
+                            <option value="daum.net" >daum.net</option>
+                            <option value="nate.com">nate.com</option>                        
+                        </select>
+                    </td>
+                </tr>
+                    
+                <tr>
+                    <td id="title">휴대전화</td>
+                    <td>
+                        <input type="text" name="phone" value="${member.phone}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td id="title">주소</td>
+                    <td>
+                        <input type="text" size="50" name="address"
+                            value="${member.address}"/>
+                    </td>
+                </tr>
+            </table>
+            <br><br>
+            <input type="button" value="취소" onclick="javascript:window.location='MainForm.do'">
+            <input type="submit" value="수정"/>  
+        </form>
+       		
 </body>
 </html>

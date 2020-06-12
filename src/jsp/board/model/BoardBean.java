@@ -1,59 +1,92 @@
 package jsp.board.model;
  
-import java.sql.Date;
  
 public class BoardBean 
 {
-    private int board_num;          // 글번호
-    private String board_id;         // 글 작성자
-    private String board_subject;     // 글 제목
-    private String board_content;     // 글 내용
-    private String board_file;         // 첨부파일 이름
-    private int board_count;         // 글 조회수
-    private Date board_date;         // 글 작성일
+    private int num;          // 글번호
+    private String id;         // 글 작성자
+    private String subject;     // 글 제목
+    private String content;     // 글 내용
+    private int count;         // 글 조회수
+    private String date;         // 글 작성일
     
-    public int getBoard_num() {
-        return board_num;
+    
+    public BoardBean() {
+    	super();
+    	System.out.println("BoardBean() 객체 생성");
     }
-    public void setBoard_num(int board_num) {
-        this.board_num = board_num;
-    }
-    public String getBoard_id() {
-        return board_id;
-    }
-    public void setBoard_id(String board_id) {
-        this.board_id = board_id;
-    }
-    public String getBoard_subject() {
-        return board_subject;
-    }
-    public void setBoard_subject(String board_subject) {
-        this.board_subject = board_subject;
-    }
-    public String getBoard_content() {
-        return board_content;
-    }
-    public void setBoard_content(String board_content) {
-        this.board_content = board_content;
-    }
-    public String getBoard_file() {
-        return board_file;
-    }
-    public void setBoard_file(String board_file) {
-        this.board_file = board_file;
-    }
-    public int getBoard_count() {
-        return board_count;
-    }
-    public void setBoard_count(int board_count) {
-        this.board_count = board_count;
-    }
-    public Date getBoard_date() {
-        return board_date;
-    }
-    public void setBoard_date(Date board_date) {
-        this.board_date = board_date;
-    }
+    
+    
+    public BoardBean(int num, String id, String subject, String content, int count) {
+		super();
+		this.num = num;
+		this.id = id;
+		this.subject = subject;
+		this.content = content;
+		this.count = count;
+		System.out.println("BoardBean(num,id,subject,content,count) 객체 생성");
+	}
+
+
+	public int getNum() {
+		return num;
+	}
+
+
+	public void setNum(int num) {
+		this.num = num;
+	}
+
+
+	public String getId() {
+		return id;
+	}
+
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+
+	public String getSubject() {
+		return subject;
+	}
+
+
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+
+
+	public String getContent() {
+		return content;
+	}
+
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+
+	public int getCount() {
+		return count;
+	}
+
+
+	public void setCount(int count) {
+		this.count = count;
+	}
+
+
+	public String getDate() {
+		return date;
+	}
+
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+	
 }
 
 

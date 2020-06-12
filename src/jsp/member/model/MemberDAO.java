@@ -12,92 +12,89 @@ import jsp.common.util.D;
 import java.sql.Date;
 import java.sql.DriverManager;
 
-
-
-
 /**
- * JSP_MEMBER 테이블과 연관된 DAO로
- * 회원 데이터를 처리하는 클래스이다.
- * <br><br>
+ * JSP_MEMBER 테이블과 연관된 DAO로 회원 데이터를 처리하는 클래스이다. <br>
+ * <br>
  * Data Access Object - 테이블 당 한개의 DAO를 작성한다.
  */
 public class MemberDAO {
 	Connection conn = null;
 	Statement stmt = null;
 	PreparedStatement pstmt = null;
-	ResultSet rs = null; 
+	ResultSet rs = null;
 	/**
 	 * String -> java.sql.Date로 변경하는 메서드
+	 * 
 	 * <pre>
 	 * 문자열로된 생년월일을 Date로 변경하기 위해 필요하다.
 	 * java.util.Date클래스로는 오라클의 Date형식과 연동할 수 없다.
-	 * Oracle의 date형식과 연동되는 java의 Date는 java.sql.Date 클래스이다. </pre>
+	 * Oracle의 date형식과 연동되는 java의 Date는 java.sql.Date 클래스이다.
+	 * </pre>
+	 * 
 	 * @param member 회원정보를 담고있는 TO
 	 * @return java.sql.Date
 	 */
-	
 	public MemberDAO() {
+		
 		try {
 			Class.forName(D.DRIVER);
 			conn = DriverManager.getConnection(D.URL, D.USERID, D.USERPW);
-			System.out.println("WriteDAO 생성, 데이터 베이스 연결!");
+			System.out.println("MemberDAO 생성, 데이터 베이스 연결!");
 		} catch(Exception e) {
 			e.printStackTrace();
 			// throw e;
-		}	
-	}
-	
+		}		
+		
+	} // 생성자
+
 	public void close() throws SQLException {
-		if(rs != null) rs.close();
-		if(pstmt != null) pstmt.close();
-		if(stmt != null) stmt.close();
-		if(conn != null) conn.close();
+		if (rs != null)
+			rs.close();
+		if (pstmt != null)
+			pstmt.close();
+		if (stmt != null)
+			stmt.close();
+		if (conn != null)
+			conn.close();
 	}
-	
-	public Date stringToDate(MemberBean member)
-	{
+
+	public Date stringToDate(MemberBean member) {
 		String year = member.getBirthyy();
 		String month = member.getBirthmm();
 		String day = member.getBirthdd();
-		
-		Date birthday  = null;
-		
-		if(year != null && month != null && day != null)
-			birthday = Date.valueOf(year+"-"+month+"-"+day);
-		
-		return birthday;
-		
-	} // end stringToDate()
-	
-	
 
+		Date birthday = null;
+
+		if (year != null && month != null && day != null)
+			birthday = Date.valueOf(year + "-" + month + "-" + day);
+
+		return birthday;
+
+	} // end stringToDate()
 
 	/**
 	 * 회원정보를 JSP_MEMBER 테이블에 저장하는 메서드
+	 * 
 	 * @param member 가입할 회원정보를 담고있는 TO
 	 * @throws SQLException
-	 * @throws ClassNotFoundException 
+	 * @throws ClassNotFoundException
 	 */
-	public void insertMember(MemberBean member) throws SQLException
-	{
-	
-		
+	public void insertMember(MemberBean member) throws SQLException {
+
 		try {
 			// 커넥션을 가져온다.
-		
-			
+
 			// 자동 커밋을 false로 한다.
 			conn.setAutoCommit(false);
-			
+
 			// 쿼리 생성한다.
 			// 가입일의 경우 자동으로 세팅되게 하기 위해 sysdate를 사용
 			StringBuffer sql = new StringBuffer();
 			sql.append("insert into JSP_MEMBER values");
-			sql.append("(?, ?, ?, ?, ?, ?, ?, ?, sysdate)");		
+			sql.append("(?, ?, ?, ?, ?, ?, ?, ?, sysdate)");
 			stringToDate(member);
-			/* 
-			 * StringBuffer에 담긴 값을 얻으려면 toString()메서드를
-			 * 이용해야 한다.
+			/*
+			 * StringBuffer에 담긴 값을 얻으려면 toString()메서드를 이용해야 한다.
 			 */
 			pstmt = conn.prepareStatement(sql.toString());
 			pstmt.setString(1, member.getId());
@@ -105,33 +102,32 @@ public class MemberDAO {
 			pstmt.setString(3, member.getName());
 			pstmt.setString(4, member.getGender());
 			pstmt.setDate(5, stringToDate(member));
-			pstmt.setString(6, member.getMail1()+"@"+member.getMail2());
+			pstmt.setString(6, member.getMail1() + "@" + member.getMail2());
 			pstmt.setString(7, member.getPhone());
 			pstmt.setString(8, member.getAddress());
-			
+
 			// 쿼리 실행
 			pstmt.executeUpdate();
 			// 완료시 커밋
-			conn.commit(); 
-			
+			conn.commit();
+
 		} catch (SQLException e) {
 			// 오류시 롤백
-			conn.rollback(); 
+			conn.rollback();
 			throw e;
 		} finally {
 			close();
 		}
 	} // end insertMember()
-	
-	
+
 	/**
 	 * 아이디를 이용해 현재 회원정보를 가져온다.
+	 * 
 	 * @param id 회원 아이디
 	 * @return MemberBean
-	 * @throws SQLException 
+	 * @throws SQLException
 	 */
-	public MemberBean getUserInfo(String id) throws SQLException 
-	{
+	public MemberBean getUserInfo(String id) throws SQLException {
 
 		MemberBean member = null;
 
@@ -151,13 +147,13 @@ public class MemberDAO {
 				String year = birthday.substring(0, 4);
 				String month = birthday.substring(5, 7);
 				String day = birthday.substring(8, 10);
-				
+
 				// 이메일을 @ 기준으로 자른다.
 				String mail = rs.getString("mail");
-				int idx = mail.indexOf("@"); 
+				int idx = mail.indexOf("@");
 				String mail1 = mail.substring(0, idx);
-				String mail2 = mail.substring(idx+1);
-				
+				String mail2 = mail.substring(idx + 1);
+
 				// 자바빈에 정보를 담는다.
 				member = new MemberBean();
 				member.setId(rs.getString("id"));
@@ -178,66 +174,66 @@ public class MemberDAO {
 
 		} catch (SQLException e) {
 			// 오류시 롤백
-			conn.rollback(); 
+			conn.rollback();
 			throw e;
 		} finally {
 			close();
 		}
-	}	// end getUserInfo
-	
-    public ArrayList<MemberBean> getMemberList()
-    {
-        ArrayList<MemberBean> memberList = new ArrayList<MemberBean>();
-        MemberBean member = null;
-        
-        try {
-            StringBuffer query = new StringBuffer();
-            query.append("SELECT * FROM JSP_MEMBER");
-            
-            pstmt = conn.prepareStatement(query.toString());
-            rs = pstmt.executeQuery();
-            
-            while (rs.next()) 
-            {
-                member = new MemberBean();
-                member.setId(rs.getString("id"));
-                member.setPassword(rs.getString("password"));
-                member.setName(rs.getString("name"));
-                member.setGender(rs.getString("gender"));
-                member.setBirthyy(rs.getDate("birth").toString());
-                member.setMail1(rs.getString("mail"));
-                member.setPhone(rs.getString("phone"));
-                member.setAddress(rs.getString("address"));
-                member.setReg(rs.getTimestamp("reg"));
-                memberList.add(member);
-            }
-            
-            return memberList;
-            
-        } catch (Exception sqle) {
-            throw new RuntimeException(sqle.getMessage());
-        } finally {
-            // Connection, PreparedStatement를 닫는다.
-            try{
-                if ( pstmt != null ){ pstmt.close(); pstmt=null; }
-                if ( conn != null ){ conn.close(); conn=null;    }
-            }catch(Exception e){
-                throw new RuntimeException(e.getMessage());
-            }
-        }
-    }
+	} // end getUserInfo
 
+	public ArrayList<MemberBean> getMemberList() {
+		ArrayList<MemberBean> memberList = new ArrayList<MemberBean>();
+		MemberBean member = null;
 
-	
-	
+		try {
+			StringBuffer query = new StringBuffer();
+			query.append("SELECT * FROM JSP_MEMBER");
+
+			pstmt = conn.prepareStatement(query.toString());
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				member = new MemberBean();
+				member.setId(rs.getString("id"));
+				member.setPassword(rs.getString("password"));
+				member.setName(rs.getString("name"));
+				member.setGender(rs.getString("gender"));
+				member.setBirthyy(rs.getDate("birth").toString());
+				member.setMail1(rs.getString("mail"));
+				member.setPhone(rs.getString("phone"));
+				member.setAddress(rs.getString("address"));
+				member.setReg(rs.getTimestamp("reg"));
+				memberList.add(member);
+			}
+
+			return memberList;
+
+		} catch (Exception sqle) {
+			throw new RuntimeException(sqle.getMessage());
+		} finally {
+			// Connection, PreparedStatement를 닫는다.
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+					pstmt = null;
+				}
+				if (conn != null) {
+					conn.close();
+					conn = null;
+				}
+			} catch (Exception e) {
+				throw new RuntimeException(e.getMessage());
+			}
+		}
+	}
+
 	/**
 	 * 회원정보를 수정한다.
+	 * 
 	 * @param member 수정할 회원정보를 담고있는 TO
 	 * @throws SQLException
 	 */
-	public void updateMember(MemberBean member) throws SQLException{
-		
-
+	public void updateMember(MemberBean member) throws SQLException {
 
 		try {
 
@@ -250,37 +246,35 @@ public class MemberDAO {
 
 			// 자동 커밋을 false로 한다.
 			conn.setAutoCommit(false);
-			
+
 			pstmt.setString(1, member.getPassword());
-			pstmt.setString(2, member.getMail1()+"@"+member.getMail2());
+			pstmt.setString(2, member.getMail1() + "@" + member.getMail2());
 			pstmt.setString(3, member.getPhone());
 			pstmt.setString(4, member.getAddress());
 			pstmt.setString(5, member.getId());
 
 			pstmt.executeUpdate();
 			// 완료시 커밋
-			conn.commit(); 
-						
+			conn.commit();
+
 		} catch (SQLException e) {
 			// 오류시 롤백
-			conn.rollback(); 
+			conn.rollback();
 			throw e;
 		} finally {
 			close();
 		}
 	} // end updateMember
-	
-	
+
 	/**
 	 * 회원정보를 삭제한다.
+	 * 
 	 * @param id 회원정보 삭제 시 필요한 아이디
 	 * @param pw 회원정보 삭제 시 필요한 비밀번호
 	 * @return x : deleteMember() 수행 후 결과값
 	 */
 	@SuppressWarnings("resource")
-	public int deleteMember(String id, String pw) 
-	{
-
+	public int deleteMember(String id, String pw) {
 
 		String dbpw = ""; // DB상의 비밀번호를 담아둘 변수
 		int x = -1;
@@ -294,17 +288,15 @@ public class MemberDAO {
 			StringBuffer query2 = new StringBuffer();
 			query2.append("DELETE FROM JSP_MEMBER WHERE ID=?");
 
-
 			// 자동 커밋을 false로 한다.
 			conn.setAutoCommit(false);
-			
+
 			// 1. 아이디에 해당하는 비밀번호를 조회한다.
 			pstmt = conn.prepareStatement(query1.toString());
 			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();
 
-			if (rs.next()) 
-			{
+			if (rs.next()) {
 				dbpw = rs.getString("password");
 				if (dbpw.equals(pw)) // 입력된 비밀번호와 DB비번 비교
 				{
@@ -312,7 +304,7 @@ public class MemberDAO {
 					pstmt = conn.prepareStatement(query2.toString());
 					pstmt.setString(1, id);
 					pstmt.executeUpdate();
-					conn.commit(); 
+					conn.commit();
 					x = 1; // 삭제 성공
 				} else {
 					x = 0; // 비밀번호 비교결과 - 다름
@@ -329,26 +321,30 @@ public class MemberDAO {
 			}
 			throw new RuntimeException(sqle.getMessage());
 		} finally {
-			try{
-				if ( pstmt != null ){ pstmt.close(); pstmt=null; }
-				if ( conn != null ){ conn.close(); conn=null;	}
-			}catch(Exception e){
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+					pstmt = null;
+				}
+				if (conn != null) {
+					conn.close();
+					conn = null;
+				}
+			} catch (Exception e) {
 				throw new RuntimeException(e.getMessage());
 			}
 		}
 	} // end deleteMember
-	
 
 	/**
 	 * 로그인시 아이디, 비밀번호 체크 메서드
+	 * 
 	 * @param id 로그인할 아이디
 	 * @param pw 비밀번호
-	 * @return x : loginCheck() 수행 후 결과값 
-	 * @throws SQLException 
+	 * @return x : loginCheck() 수행 후 결과값
+	 * @throws SQLException
 	 */
-	public int loginCheck(String id, String pw) throws SQLException 
-	{
-
+	public int loginCheck(String id, String pw) throws SQLException {
 
 		String dbPW = ""; // db에서 꺼낸 비밀번호를 담을 변수
 		int x = -1;
@@ -366,11 +362,11 @@ public class MemberDAO {
 			{
 				dbPW = rs.getString("password"); // 비번을 변수에 넣는다.
 
-				if (dbPW.equals(pw)) 
+				if (dbPW.equals(pw))
 					x = 1; // 넘겨받은 비번과 꺼내온 비번 비교. 같으면 인증성공
-				else 				 
+				else
 					x = 0; // DB의 비밀번호와 입력받은 비밀번호 다름, 인증실패
-				
+
 			} else {
 				x = -1; // 해당 아이디가 없을 경우
 			}
@@ -379,47 +375,12 @@ public class MemberDAO {
 
 		} catch (SQLException e) {
 			// 오류시 롤백
-			conn.rollback(); 
+			conn.rollback();
 			throw e;
 		} finally {
 			close();
 		}
-	} // end loginCheck()	
-	
-    public boolean duplicateIdCheck(String id)
-    {
-
-        boolean x= false;
-        
-        try {
-            // 쿼리
-            StringBuffer query = new StringBuffer();
-            query.append("SELECT ID FROM JSP_MEMBER WHERE ID=?");
-                        
-            pstmt = conn.prepareStatement(query.toString());
-            pstmt.setString(1, id);
-            rs = pstmt.executeQuery();
-            
-            if(rs.next()) {
-            	x= true; //해당 아이디 존재
-            }
-            
-            return x;
-            
-        } catch (Exception sqle) {
-            throw new RuntimeException(sqle.getMessage());
-        } finally {
-            try{
-                if ( pstmt != null ){ pstmt.close(); pstmt=null; }
-                if ( conn != null ){ conn.close(); conn=null;    }
-            }catch(Exception e){
-                throw new RuntimeException(e.getMessage());
-            }
-        }
-    } // end duplicateIdCheck()
-    
+	} // end loginCheck()
 
 
-	
-} //end MemberDAO
-
+} // end MemberDAO

@@ -28,13 +28,6 @@ td{
     {
     	
     	
-    	
-    	 if(document.userInfo.idDuplication.value != "idCheck"){
-             alert("아이디 중복체크를 해주세요.");
-             return false;
-         }
-    	
-    	
     	if(!document.userInfo.id.value){
     		alert("아이디를 입력하지 않았습니다.");
     		userInfo.id.focus();
@@ -154,21 +147,9 @@ td{
     	location.href="MainForm.do";
     }
     
-    // 아이디 중복체크 화면open
-    function openIdChk(){
-    
-        window.name = "parentForm";
-        window.open("member/IdCheckForm.jsp",
-                "chkForm", "width=500, height=300, resizable = no, scrollbars = no");    
-    }
+   
 
-    // 아이디 입력창에 값 입력시 hidden에 idUncheck를 세팅한다.
-    // 이렇게 하는 이유는 중복체크 후 다시 아이디 창이 새로운 아이디를 입력했을 때
-    // 다시 중복체크를 하도록 한다.
-    
-    function inputIdChk(){
-        document.userInfo.idDuplication.value ="idUncheck";
-    }
+ 
     
    </script>	
 </head>
@@ -186,9 +167,8 @@ td{
 				<tr>
 					<td id="title">아이디</td>
 					<td>
-						<input type="text" name="id" maxlength="50" id="inputid" onkeydown="inputIdChk()">
-						<input type="button" value="중복확인" onclick="openIdChk()" >
-						<input type="hidden" name="idDuplication" value="idUncheck">	
+						<input type="text" name="id" maxlength="50" >
+						<input type="button" value="중복확인"  >
 					</td>
 				</tr>
 						

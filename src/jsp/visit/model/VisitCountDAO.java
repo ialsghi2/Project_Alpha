@@ -8,23 +8,28 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import jsp.common.util.D;
+import jsp.member.model.MemberDAO;
 
 public class VisitCountDAO {
 	Connection conn = null;
 	Statement stmt = null;
 	PreparedStatement pstmt = null;
-	ResultSet rs = null; 
+	ResultSet rs = null;
 	/**
 	 * String -> java.sql.Date로 변경하는 메서드
+	 * 
 	 * <pre>
 	 * 문자열로된 생년월일을 Date로 변경하기 위해 필요하다.
 	 * java.util.Date클래스로는 오라클의 Date형식과 연동할 수 없다.
-	 * Oracle의 date형식과 연동되는 java의 Date는 java.sql.Date 클래스이다. </pre>
+	 * Oracle의 date형식과 연동되는 java의 Date는 java.sql.Date 클래스이다.
+	 * </pre>
+	 * 
 	 * @param member 회원정보를 담고있는 TO
 	 * @return java.sql.Date
 	 */
-	
-	public VisitCountDAO() {
+
+	public VisitCountDAO() {	
+		
 		try {
 			Class.forName(D.DRIVER);
 			conn = DriverManager.getConnection(D.URL, D.USERID, D.USERPW);
@@ -32,9 +37,10 @@ public class VisitCountDAO {
 		} catch(Exception e) {
 			e.printStackTrace();
 			// throw e;
-		}	
-	}
-	
+		}		
+		
+	} 
+
 	public void setTotalCount() throws SQLException {
 		try {
 			
@@ -49,7 +55,7 @@ public class VisitCountDAO {
 			// 완료시 커밋
 			conn.commit(); 
 			
-		} catch (Exception sqle) {
+		} catch ( Exception sqle) {
 			try {
 				conn.rollback(); // 오류시 롤백
 			} catch (SQLException e) {

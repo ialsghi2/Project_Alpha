@@ -2,11 +2,10 @@
     pageEncoding="UTF-8"%>
 <%@ page import="jsp.member.model.MemberDAO" %>    
 <%@ page import="jsp.member.model.MemberBean" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> 
 
-<%
-	// MemberInfoAction에서 넘긴 회원정보를 추출한다.
-	MemberBean member=(MemberBean)request.getAttribute("memberInfo");
-%>
+
+
 
 
 <html>
@@ -49,55 +48,57 @@
 		<b><font size="6" color="gray">내 정보</font></b>
 		<br><br><br>
 						<!-- 가져온 회원정보를 출력한다. -->
-		<table>
-			<tr>
-				<td id="title">아이디</td>
-				<td><%=member.getId() %></td>
-			</tr>
-						
-			<tr>
-				<td id="title">비밀번호</td>
-				<td><%=member.getPassword() %></td>
-			</tr>
-					
-			<tr>
-				<td id="title">이름</td>
-				<td><%=member.getName() %></td>
-			</tr>
-					
-			<tr>
-				<td id="title">성별</td>
-				<td><%=member.getGender()%></td>
-			</tr>
-					
-			<tr>
-				<td id="title">생일</td>
-				<td>
-					<%=member.getBirthyy() %>년 
-					<%=member.getBirthmm() %>월 
-					<%=member.getBirthdd() %>일
-				</td>
-			</tr>
-					
-			<tr>
-				<td id="title">이메일</td>
-				<td>
-					<%=member.getMail1() %>@
-					<%=member.getMail2() %>
-				</td>
-			</tr>
-					
-			<tr>
-				<td id="title">휴대전화</td>
-				<td><%=member.getPhone() %></td>
-			</tr>
-			<tr>
-				<td id="title">주소</td>
-				<td>
-					<%=member.getAddress() %>
-				</td>
-			</tr>
-		</table>
+        <c:set var="member" value="${requestScope.memberInfo}"/>
+        
+        <!-- 가져온 회원정보를 출력한다. -->
+        <table>
+            <tr>
+                <td id="title">아이디</td>
+                <td>${member.id}</td>
+            </tr>
+                        
+            <tr>
+                <td id="title">비밀번호</td>
+                <td>${member.password}</td>
+            </tr>
+                    
+            <tr>
+                <td id="title">이름</td>
+                <td>${member.name}</td>
+            </tr>
+                    
+            <tr>
+                <td id="title">성별</td>
+                <td>${member.gender}</td>
+            </tr>
+                    
+            <tr>
+                <td id="title">생일</td>
+                <td>
+                    ${member.birthyy}년 
+                    ${member.birthmm}월 
+                    ${member.birthdd}일
+                </td>
+            </tr>
+                    
+            <tr>
+                <td id="title">이메일</td>
+                <td>
+                    ${member.mail1}@${member.mail2}
+                </td>
+            </tr>
+                    
+            <tr>
+                <td id="title">휴대전화</td>
+                <td>${member.phone}</td>
+            </tr>
+            <tr>
+                <td id="title">주소</td>
+                <td>
+                    ${member.address}
+                </td>
+            </tr>
+        </table>
 		
 		<br>
 		<input type="button" value="뒤로" onclick="changeForm(-1)">

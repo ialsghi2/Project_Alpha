@@ -27,13 +27,10 @@ CREATE TABLE jsp_member
 CREATE TABLE jsp_member_board
 (
 	board_num number NOT NULL,
-	board_id varchar2(50),
 	board_subject varchar2(100),
 	board_content clob,
-	board_file varchar2(100),
 	board_count number,
-	board_date date,
-	board_likey number,
+	board_date date DEFAULT SYSDATE,
 	id varchar2(50) NOT NULL,
 	PRIMARY KEY (board_num)
 );
@@ -47,33 +44,34 @@ ALTER TABLE jsp_member_board
 	REFERENCES jsp_member (id)
 ;
 
+SELECT * FROM USER_SEQUENCES;
 
+
+SELECT * FROM jsp_member_board_SEQUENCES;
+
+CREATE SEQUENCE jsp_member_board_seq;
+
+				jsp_board_member_seq
+				
 SELECT * FROM JSP_MEMBER;
 
 SELECT * FROM jsp_member_board;
 
-CREATE SEQUENCE jsp_member_board;
+CREATE SEQUENCE jsp_member_board_seq;
 
 DROP TABLE JSP_MEMBER_BOARD;
 
+DROP TABLE JSP_MEMBER;
+
 COMMIT;
 
-DROP SEQUENCE jsp_member_board;
+DROP SEQUENCE jsp_member_board_seq;
 
 SELECT jsp_member FROM DUAL;
 
-SELECT
-    OBJECT_NAME
-    ,OBJECT_TYPE
-FROM
-    USER_OBJECTS
-WHERE OBJECT_NAME LIKE 'JSP_MEMBER_BOARD';
+INSERT INTO JSP_MEMBER_BOARD (BOARD_NUM , BOARD_SUBJECT , BOARD_CONTENT ,ID )
+	SELECT jsp_member_board_seq.nextval, BOARD_SUBJECT , BOARD_CONTENT , ID FROM JSP_MEMBER_BOARD;
 
-desc jsp_member_board_objects;
+CREATE USER scott IDENTIFIED BY tiger;
 
-SELECT *
-FROM user_objects
-WHERE object_name = 'JSP_MEMBER_BOARD';
-
-
-
+GRANT connect, resource, create view, create procedure TO scott;
