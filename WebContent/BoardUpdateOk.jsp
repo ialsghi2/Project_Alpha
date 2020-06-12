@@ -14,7 +14,7 @@
 	</c:when>
 	<c:otherwise>
 		<script>
-			
+			//
 			alert('수정 성공');
 			location.href="BoardViewForm.bo?num=${param.num}";
 		</script>
