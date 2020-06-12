@@ -12,7 +12,7 @@
 			</script>
 	</c:when>
 	<c:otherwise>
-	
+	/////
 <!DOCTYPE html>
 <html lang="ko">
 <head>
