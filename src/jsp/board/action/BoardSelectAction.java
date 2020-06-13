@@ -16,7 +16,7 @@ public class BoardSelectAction implements Command {
 		BoardDAO dao = new BoardDAO();
 		BoardBean [] arr = null;
 		int num = Integer.parseInt(request.getParameter("num"));  // 매개변수 검증 필요
-
+//
 		try {
 			arr = dao.selectByNum(num); // 읽기 only
 			request.setAttribute("list", arr);
