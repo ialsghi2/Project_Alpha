@@ -22,7 +22,7 @@ public class BoardSelectAction implements Command {
 			request.setAttribute("list", arr);
 		} catch (SQLException e) { // 만약 ConnectionPool 을 사용한다면 여기서 NamingException 도 catch 해야 한다  
 			e.printStackTrace();
-		}
+		}//
 	}
 
 }
