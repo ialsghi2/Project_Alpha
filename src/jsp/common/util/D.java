@@ -5,8 +5,8 @@ public class D {
 	
 	public static final String DRIVER = "oracle.jdbc.driver.OracleDriver";
 	public static final String URL = "jdbc:oracle:thin:@localhost:1521:XE";
-	public static final String USERID = "scott9302";
-	public static final String USERPW = "tiger9302";
+	public static final String USERID = "SCOTT9302";
+	public static final String USERPW = "TIGER9302";
 	
 	public static final String SQL_BOARD_SELECT =
 			"SELECT * FROM jsp_member_board ORDER BY board_num DESC";
